@@ -1,0 +1,11 @@
+Model Information:
+* title:	Walters family grave
+* source:	https://sketchfab.com/3d-models/walters-family-grave-8022014deda547e889976c7b2d48e923
+* author:	Katie Wolfe (https://sketchfab.com/katiewolfe)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Walters family grave" (https://sketchfab.com/3d-models/walters-family-grave-8022014deda547e889976c7b2d48e923) by Katie Wolfe (https://sketchfab.com/katiewolfe) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

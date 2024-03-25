@@ -1,0 +1,5 @@
+/opt/clion-2022.2.4/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /home/matf-racunarska-grafika/Desktop/RGProject -B /home/matf-racunarska-grafika/Desktop/RGProject/cmake-build-debug
+-- Found ASSIMP: /usr/lib/x86_64-linux-gnu/libassimp.so
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/matf-racunarska-grafika/Desktop/RGProject/cmake-build-debug
