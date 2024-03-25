@@ -98,6 +98,10 @@ struct ProgramState {
     glm::vec3 treeRotationAxis22 = glm::vec3(0.0f, 1.0f, 0.0f);
     float treeRotationAngle22 = 69.0f;
     float treeScale2 = 3.0f;
+    glm::vec3 benchPosition = glm::vec3(-3.0f,-3.1f,-2.0f);
+    glm::vec3 benchRotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+    float benchRotationAngle = 0.0f;
+    float benchScale = 0.013f;
     DirLight dirLight;
     PointLight pointLight;
     SpotLight spotLight;
@@ -209,9 +213,10 @@ int main() {
     // -----------
     Model ourModel("resources/objects/walters_family_grave/scene.gltf");
     Model treeModel("resources/objects/tree/scene.gltf");
-    //Model ourModel("resources/objects/forest/scene.gltf");
+    Model benchModel("resources/objects/bench/scene.gltf");
     ourModel.SetShaderTextureNamePrefix("material.");
     treeModel.SetShaderTextureNamePrefix("material.");
+    benchModel.SetShaderTextureNamePrefix("material.");
 
     DirLight& dirLight = programState->dirLight;
     dirLight.direction = glm::vec3(-0.2f, -1.0f, -0.3f);
@@ -396,6 +401,13 @@ int main() {
         modelT2 = glm::scale(modelT2, glm::vec3(programState->treeScale2));
         ourShader.setMat4("model", modelT2);
         treeModel.Draw(ourShader);
+
+        glm::mat4 modelB = glm::mat4(1.0f);
+        modelB = glm::translate(modelB, programState->benchPosition);
+        //modelB = glm::rotate(modelB, (float)glm::radians(programState->benchRotationAngle), programState->benchRotationAxis);
+        modelB = glm::scale(modelB, glm::vec3(programState->benchScale));
+        ourShader.setMat4("model", modelB);
+        benchModel.Draw(ourShader);
 
         glDepthFunc(GL_LEQUAL);  // depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
