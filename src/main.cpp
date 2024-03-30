@@ -363,29 +363,26 @@ int main() {
     };
 
     // skybox VAO
-//    unsigned int skyboxVAO, skyboxVBO;
-//    glGenVertexArrays(1, &skyboxVAO);
-//    glGenBuffers(1, &skyboxVBO);
-//    glBindVertexArray(skyboxVAO);
-//    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-//    glEnableVertexAttribArray(0);
+    unsigned int skyboxVAO, skyboxVBO;
+    glGenVertexArrays(1, &skyboxVAO);
+    glGenBuffers(1, &skyboxVBO);
+    glBindVertexArray(skyboxVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
 
-//    vector<std::string> faces
-//    {
-//        FileSystem::getPath("resources/textures/skybox/right.jpg"),
-//        FileSystem::getPath("resources/textures/skybox/left.jpg"),
-//        FileSystem::getPath("resources/textures/skybox/up.jpg"),
-//        FileSystem::getPath("resources/textures/skybox/down.jpg"),
-//        FileSystem::getPath("resources/textures/skybox/front.jpg"),
-//        FileSystem::getPath("resources/textures/skybox/back.jpg")
-//    };
-//    unsigned int cubemapTexture = loadCubemap(faces);
-
-//    skyboxShader.use();
-//    skyboxShader.setInt("skybox", 0);
+    vector<std::string> faces
+    {
+        FileSystem::getPath("resources/textures/skybox/right.png"),
+        FileSystem::getPath("resources/textures/skybox/left.png"),
+        FileSystem::getPath("resources/textures/skybox/top.png"),
+        FileSystem::getPath("resources/textures/skybox/bottom.png"),
+        FileSystem::getPath("resources/textures/skybox/back.png"),
+        FileSystem::getPath("resources/textures/skybox/front.png")
+    };
+    unsigned int cubemapTexture = loadCubemap(faces);
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -395,6 +392,8 @@ int main() {
     shaderBloomFinal.use();
     shaderBloomFinal.setInt("scene", 0);
     shaderBloomFinal.setInt("bloomBlur", 1);
+    skyboxShader.use();
+    skyboxShader.setInt("skybox", 0);
 
     // render loop
     // -----------
@@ -505,7 +504,24 @@ int main() {
         shaderLight.setVec3("lightColor", glm::vec3(5.0f, 1.7f, 0.0f));
         renderCube();
 
+        //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        glDepthFunc(GL_LEQUAL);  // depth test passes when values are equal to depth buffer's content
+        skyboxShader.use();
+        view = glm::mat4(glm::mat3(programState->camera.GetViewMatrix())); // remove translation from the view matrix
+        skyboxShader.setMat4("view", view);
+        skyboxShader.setMat4("projection", projection);
+
+        glBindVertexArray(skyboxVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
+        glDepthFunc(GL_LESS);
+
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // 2. blur bright fragments with two-pass Gaussian Blur
         // --------------------------------------------------
