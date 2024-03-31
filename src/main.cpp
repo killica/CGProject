@@ -40,6 +40,8 @@ bool hdrKeyPressed = false;
 bool bloom = true;
 bool bloomKeyPressed = false;
 float exposure = 1.1f;
+bool blinn = false;
+bool blinnKeyPressed = false;
 
 // timing
 float deltaTime = 0.0f;
@@ -453,6 +455,7 @@ int main() {
         glm::mat4 view = programState->camera.GetViewMatrix();
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
+        ourShader.setBool("blinn", blinn);
 
         // render the loaded models
         glm::mat4 modelG = glm::mat4(1.0f);
@@ -606,6 +609,25 @@ void processInput(GLFWwindow *window) {
         programState->spotLight.ind = 1 - programState->spotLight.ind;
     }
 
+    //Blinn-Phong
+    if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && !blinnKeyPressed){
+        blinn = !blinn;
+        blinnKeyPressed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_B) == GLFW_RELEASE){
+        blinnKeyPressed = false;
+    }
+
+    //HDR
+    if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS && !hdrKeyPressed){
+        hdr = !hdr;
+        hdrKeyPressed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_H) == GLFW_RELEASE){
+        hdrKeyPressed = false;
+    }
+
+    //Bloom
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && !bloomKeyPressed)
     {
         bloom = !bloom;
