@@ -457,6 +457,10 @@ int main() {
         ourShader.setMat4("view", view);
         ourShader.setBool("blinn", blinn);
 
+        //face culling
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+
         // render the loaded models
         glm::mat4 modelG = glm::mat4(1.0f);
         modelG = glm::translate(modelG, programState->graveyardPosition);
@@ -464,6 +468,8 @@ int main() {
         modelG = glm::scale(modelG, glm::vec3(programState->graveyardScale));
         ourShader.setMat4("model", modelG);
         ourModel.Draw(ourShader);
+
+        glCullFace(GL_BACK);
 
         glm::mat4 modelT1 = glm::mat4(1.0f);
         modelT1 = glm::translate(modelT1, programState->treePosition1);
@@ -508,6 +514,7 @@ int main() {
         renderCube();
 
         //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glDisable(GL_CULL_FACE);
 
         glDepthFunc(GL_LEQUAL);  // depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
