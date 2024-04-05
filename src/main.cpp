@@ -89,28 +89,32 @@ struct ProgramState {
     bool ImGuiEnabled = false;
     Camera camera;
     bool CameraMouseMovementUpdateEnabled = true;
-    glm::vec3 graveyardPosition = glm::vec3(0.0f,-3.1f,-2.0f);
+    glm::vec3 graveyardPosition = glm::vec3(0.0f,-4.0f,-2.0f);
     glm::vec3 graveyardRotationAxis1 = glm::vec3(0.0f, 1.0f, 0.0f);
-    float graveyardRotationAngle1 = 180.0f;
+    float graveyardRotationAngle1 = 150.0f;
     float graveyardScale = -1.0f;
-    glm::vec3 treePosition1 = glm::vec3(1.5f,-3.0f,-10.0f);
+    glm::vec3 treePosition1 = glm::vec3(3.0f,-3.5f,-10.0f);
     glm::vec3 treeRotationAxis1 = glm::vec3(0.0f, 0.0f, 1.0f);
     float treeRotationAngle1 = 90.0f;
     float treeScale1 = 3.0f;
-    glm::vec3 treePosition2 = glm::vec3(2.0f,-3.0f,-12.0f);
+    glm::vec3 treePosition2 = glm::vec3(2.5f,-3.33f,-11.0f);
     glm::vec3 treeRotationAxis21 = glm::vec3(0.0f, 0.0f, 1.0f);
     float treeRotationAngle21 = 90.0f;
     glm::vec3 treeRotationAxis22 = glm::vec3(0.0f, 1.0f, 0.0f);
     float treeRotationAngle22 = 69.0f;
     float treeScale2 = 3.0f;
-    glm::vec3 benchPosition = glm::vec3(-3.0f,-3.1f,-2.0f);
+    glm::vec3 benchPosition = glm::vec3(-2.0f,-3.45f,-2.0f);
     glm::vec3 benchRotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
-    float benchRotationAngle = 0.0f;
+    float benchRotationAngle = -30.0f;
     float benchScale = 0.013f;
-    glm::vec3 campfirePosition = glm::vec3(4.0f,-3.1f,-2.0f);
+    glm::vec3 campfirePosition = glm::vec3(4.0f,-3.5f,-2.0f);
     glm::vec3 campfireRotationAxis = glm::vec3(-1.0f, 0.0f, 0.0f);
     float campfireRotationAngle = 90.0f;
     float campfireScale = 0.01f;
+    glm::vec3 terrainPosition = glm::vec3(6.0f, -8.5f, 0.0f);
+    glm::vec3 terrainRotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+    float terrainRotationAngle = 90.0f;
+    float terrainScale = 0.85f;
     DirLight dirLight;
     PointLight pointLight;
     SpotLight spotLight;
@@ -283,6 +287,7 @@ int main() {
     Model treeModel("resources/objects/tree/scene.gltf");
     Model benchModel("resources/objects/bench/scene.gltf");
     Model campfireModel("resources/objects/campfire/scene.gltf");
+    Model terrainModel("resources/objects/floating_island_map/scene.gltf");
 
     ourModel.SetShaderTextureNamePrefix("material.");
     treeModel.SetShaderTextureNamePrefix("material.");
@@ -296,7 +301,7 @@ int main() {
     dirLight.specular = glm::vec3(0.5f, 0.5f, 0.5f);
 
     PointLight& pointLight = programState->pointLight;
-    pointLight.position = glm::vec3(2.7f,-3.1f,-2.0f);
+    pointLight.position = glm::vec3(2.7f,-3.5f,-2.0f);
     pointLight.ambient = glm::vec3(0.1, 0.1, 0.1);
     pointLight.diffuse = glm::vec3(5.0, 1.5, 0.0);
     pointLight.specular = glm::vec3(1.0, 0.7, 0.3);
@@ -488,7 +493,7 @@ int main() {
 
         glm::mat4 modelB = glm::mat4(1.0f);
         modelB = glm::translate(modelB, programState->benchPosition);
-        //modelB = glm::rotate(modelB, (float)glm::radians(programState->benchRotationAngle), programState->benchRotationAxis);
+        modelB = glm::rotate(modelB, (float)glm::radians(programState->benchRotationAngle), programState->benchRotationAxis);
         modelB = glm::scale(modelB, glm::vec3(programState->benchScale));
         ourShader.setMat4("model", modelB);
         benchModel.Draw(ourShader);
@@ -499,6 +504,13 @@ int main() {
         modelCF = glm::scale(modelCF, glm::vec3(programState->campfireScale));
         ourShader.setMat4("model", modelCF);
         campfireModel.Draw(ourShader);
+
+        glm::mat4 modelTr = glm::mat4(1.0f);
+        modelTr = glm::translate(modelTr, programState->terrainPosition);
+        modelTr = glm::rotate(modelTr, (float)glm::radians(programState->terrainRotationAngle), programState->terrainRotationAxis);
+        modelTr = glm::scale(modelTr, glm::vec3(programState->terrainScale));
+        ourShader.setMat4("model", modelTr);
+        terrainModel.Draw(ourShader);
 
         //glBindFramebuffer(GL_FRAMEBUFFER, 0);
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
