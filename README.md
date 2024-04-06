@@ -1,8 +1,8 @@
-# CGProject
-
-Computer graphics project
+# Computer Graphics Project
 
 The Walter's destiny
+
+Lazar Savić, april 2024
 
 ## Key Bindings
 
