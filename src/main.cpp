@@ -296,8 +296,8 @@ int main() {
 
     DirLight& dirLight = programState->dirLight;
     dirLight.direction = glm::vec3(-0.2f, -1.0f, -0.3f);
-    dirLight.ambient = glm::vec3(0.05f, 0.05f, 0.05f);
-    dirLight.diffuse = glm::vec3(0.2f, 0.2f, 0.2f);
+    dirLight.ambient = glm::vec3(0.01f, 0.01f, 0.01f);
+    dirLight.diffuse = glm::vec3(0.1f, 0.1f, 0.1f);
     dirLight.specular = glm::vec3(0.5f, 0.5f, 0.5f);
 
     PointLight& pointLight = programState->pointLight;
@@ -312,7 +312,7 @@ int main() {
 
     SpotLight& spotLight = programState->spotLight;
     spotLight.ambient = glm::vec3(0.1, 0.1, 0.1);
-    spotLight.diffuse = glm::vec3(0.5, 0.5, 0.5);
+    spotLight.diffuse = glm::vec3(0.3, 0.3, 0.3);
     spotLight.specular = glm::vec3(1.0, 1.0, 1.0);
 
     spotLight.constant = 1.0f;
@@ -476,6 +476,9 @@ int main() {
 
         glCullFace(GL_BACK);
 
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         glm::mat4 modelT1 = glm::mat4(1.0f);
         modelT1 = glm::translate(modelT1, programState->treePosition1);
         modelT1 = glm::rotate(modelT1, (float)glm::radians(programState->treeRotationAngle1), programState->treeRotationAxis1);
@@ -490,6 +493,8 @@ int main() {
         modelT2 = glm::scale(modelT2, glm::vec3(programState->treeScale2));
         ourShader.setMat4("model", modelT2);
         treeModel.Draw(ourShader);
+
+        glDisable(GL_BLEND);
 
         glm::mat4 modelB = glm::mat4(1.0f);
         modelB = glm::translate(modelB, programState->benchPosition);
